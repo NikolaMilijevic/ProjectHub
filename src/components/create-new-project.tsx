@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import React from 'react';
 import { Label } from './ui/label';
 import { ArrowLeft } from 'lucide-react';
+import { useRouter } from '@tanstack/react-router';
 
 interface FormValues {
   projectTitle: string;
@@ -44,7 +45,8 @@ const validationSchema = Yup.object({
   .required('Description is required'),
   budget: Yup.number()
   .positive('Budget must be positive')
-  .max(10000000, 'Budget must be at most 10M'),
+  .max(10000000, 'Budget must be at most 10M')
+  .required('Budget is required'),
   startDate: Yup.date()
   .required('Start Date is required'),
   dueDate: Yup.date()
@@ -62,7 +64,9 @@ const validationSchema = Yup.object({
   .required('Progress is required')
 });
 
-const NewProjectForm: React.FC = () => {
+const NewProjectForm: React.FC = () => { 
+  const router = useRouter();
+
   const handleSubmit = (values: FormValues, { setSubmitting, resetForm }: any) => {
     console.log('Form submitted:', values);
     setSubmitting(false);
@@ -72,7 +76,7 @@ const NewProjectForm: React.FC = () => {
   return (
     <>
       <div className="flex items-center gap-4 mb-2 mt-2 pl-100">
-        <Button variant={'secondary'} className="bg-white">
+        <Button variant={'secondary'} className="bg-white hover:bg-white" onClick={() => router.navigate({ to: '/dashboard'})}>
           <ArrowLeft className="w-4 h-4 mr-1" />
           Back to Projects
         </Button>
@@ -95,7 +99,7 @@ const NewProjectForm: React.FC = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, resetForm }) => (
             <Form className="grid gap-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -152,7 +156,7 @@ const NewProjectForm: React.FC = () => {
                     <option value="Medium">Medium</option>
                     <option value="High">High</option>
                   </Field>
-                  <ErrorMessage name="priorityLevel" className="text-red-500 text-sm" />
+                  <ErrorMessage name="priorityLevel" component="div" className="text-red-500 text-sm" />
                 </div>
                 <div>
                   <Label htmlFor="progress" className="mb-2">Progress(%)*</Label>
@@ -163,7 +167,18 @@ const NewProjectForm: React.FC = () => {
               <hr className="mt-3 mb-8" />
 
               <div className="grid grid-cols-[150px_1fr] gap-2">
-                <Button variant={'outline'} className="bg-white-300 text-black-200">Cancel</Button>
+                <Button
+                  type="button"
+                  variant={'outline'} 
+                  className="bg-white-300 text-black-200"
+                  onClick={() => {
+                    resetForm();
+                    router.navigate({ to: '/dashboard'});
+                  }
+                  }
+                >
+                  Cancel
+                </Button>
                 <Button 
                   className="bg-violet-400 hover:bg-violet-500" 
                   type="submit"
