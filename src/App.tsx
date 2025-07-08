@@ -1,8 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider, Route, Router, RootRoute, Outlet } from '@tanstack/react-router';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import NewProjectForm from './components/create-new-project';
 import DashboardPage from './components/dashboard';
+import { ProjectProvider } from './components/project-context';
 
 const queryClient = new QueryClient();
 
@@ -32,7 +34,10 @@ const router = new Router ({ routeTree });
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <ProjectProvider>
+        <ReactQueryDevtools />
+        <RouterProvider router={router} />
+      </ProjectProvider>
     </QueryClientProvider>
   )
 }

@@ -5,6 +5,7 @@ import React from 'react';
 import { Label } from './ui/label';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from '@tanstack/react-router';
+import { useProjectContext } from './project-context';
 
 interface FormValues {
   projectTitle: string;
@@ -67,10 +68,18 @@ const validationSchema = Yup.object({
 const NewProjectForm: React.FC = () => { 
   const router = useRouter();
 
+  const { addProject } = useProjectContext(); 
+
   const handleSubmit = (values: FormValues, { setSubmitting, resetForm }: any) => {
+    const newProject = {
+      ...values,
+      id: crypto.randomUUID(),
+    }
     console.log('Form submitted:', values);
+    addProject(newProject);
     setSubmitting(false);
     resetForm();
+    router.navigate({to: '/dashboard'});
   };
 
   return (
