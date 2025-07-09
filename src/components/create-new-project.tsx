@@ -17,6 +17,7 @@ interface FormValues {
   initialStatus: string;
   priorityLevel: string;
   progress: number;
+  createdAt: string;
 }
 
 const initialValues: FormValues = {
@@ -28,7 +29,8 @@ const initialValues: FormValues = {
   dueDate: '',
   initialStatus: 'Planning',
   priorityLevel: 'Low',
-  progress: 0
+  progress: 0,
+  createdAt: '',
 };
 
 const validationSchema = Yup.object({
@@ -73,6 +75,7 @@ const NewProjectForm: React.FC = () => {
   const handleSubmit = (values: FormValues, { setSubmitting, resetForm }: any) => {
     const newProject = {
       ...values,
+      createdAt: new Date().toISOString(),
       id: crypto.randomUUID(),
     }
     console.log('Form submitted:', values);

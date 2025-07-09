@@ -12,6 +12,7 @@ interface Project {
   priorityLevel: string;
   progress: number;
   id: string;
+  createdAt: string;
 }
 
 interface ProjectContextType {
