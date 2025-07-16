@@ -1,24 +1,24 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { RouterProvider, Route, Router, RootRoute, Outlet } from '@tanstack/react-router';
+import { RouterProvider, Outlet, createRoute, createRouter, createRootRoute } from '@tanstack/react-router';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-import NewProjectForm from './components/create-new-project';
+import NewProjectForm from './pages/new-project';
 import DashboardPage from './components/dashboard';
 import { ProjectProvider } from './components/project-context';
 
 const queryClient = new QueryClient();
 
-const rootRoute = new RootRoute({
+const rootRoute = createRootRoute({
   component: () => <Outlet />
 });
 
-const dashboardRoute = new Route({
+const dashboardRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/dashboard',
   component: DashboardPage,
 });
 
-const newProjectRoute = new Route({
+const newProjectRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/new-project',
   component: NewProjectForm
@@ -29,7 +29,7 @@ const routeTree = rootRoute.addChildren({
   newProjectRoute
 });
 
-const router = new Router ({ routeTree });
+const router = createRouter ({ routeTree });
 
 const App = () => {
   return (

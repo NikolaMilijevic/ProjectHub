@@ -101,7 +101,7 @@ const DashboardPage: React.FC = () => {
                   <p className="text-gray-400">Progress</p>
                   <p className="text-violet-600">{project.progress}%</p>
                 </div>
-                <Progress className="bg-gray-100 [&>div]:bg-violet-600" value={project.progress} />
+                <Progress className="bg-gray-100" progressColor="bg-violet-600" value={project.progress} />
                 <div className="mt-3">
                   <Badge 
                   className={

@@ -1,9 +1,9 @@
 import { Formik, Form } from 'formik';
 import React from 'react';
 import { useRouter } from '@tanstack/react-router';
-import { useProjectContext } from './project-context';
-import Header from './header-project';
-import ProjectInformation from './project-information';
+import { useProjectContext } from '../components/project-context';
+import Header from '../components/header-project';
+import ProjectInformation from '../components/project-information';
 import BasicInfo from '../features/project-form/basic-info';
 import FinancialTimeline from '../features/project-form/financial-timeline';
 import StatusProgress from '../features/project-form/status-progress';
