@@ -1,7 +1,7 @@
 import { useRouter } from "@tanstack/react-router";
 import { useFormikContext } from "formik";
 import { Button } from "../../components/ui/button";
-
+import ConfirmDialog from "../../components/ui/confirm-dialog";
 
 const FormActions = () => {
   const { isSubmitting, isValid, resetForm } = useFormikContext();
@@ -13,14 +13,14 @@ const FormActions = () => {
   }
   return (
     <div className="grid grid-cols-[150px_1fr] gap-2 border-t-1 pt-10">
-      <Button
-        type="button"
-        variant={'outline'} 
+      <ConfirmDialog
+        triggerLabel="Cancel"
+        triggerVariant="outline"
         className="bg-white-300 text-black-200"
-        onClick={handleCancel}
-      >
-        Cancel
-      </Button>
+        title="Are you sure?"
+        description="This action cannot be undone. This will clear your form and return you to dashboard."
+        onConfirm={handleCancel}
+      />
       <Button 
         type="submit"
         className="bg-violet-400 hover:bg-violet-500" 

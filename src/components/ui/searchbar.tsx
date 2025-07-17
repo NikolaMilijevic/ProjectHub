@@ -81,14 +81,12 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             className="flex items-center border-1 "
         >
             <ToggleGroupItem 
-            value="grid" 
-            className="bg-violet-400 text-white"
+            value="grid"
             >
                 <Grid3x3></Grid3x3>
             </ToggleGroupItem>
             <ToggleGroupItem 
                 value="list"
-                className=" bg-violet-400 text-white"
             >
                 <Menu></Menu>
             </ToggleGroupItem>
