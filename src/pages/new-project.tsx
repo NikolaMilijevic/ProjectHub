@@ -33,7 +33,7 @@ const NewProjectForm: React.FC = () => {
   return (
     <div>
       <Header />
-        <div className="max-w-250 mx-auto p-6 shadow rounded mt-10">
+        <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 lg:my-6 py-6 shadow rounded-xl mt-10 bg-white">
           <ProjectInformation />
           <Formik
             initialValues={initialValues}
