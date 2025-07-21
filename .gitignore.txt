@@ -1,0 +1,19 @@
+# Ignore Visual Studio
+.vs/
+*.user
+*.suo
+*.vsidx
+
+# Node modules (if Node is used)
+node_modules/
+
+# Python cache (if applicable)
+__pycache__/
+*.pyc
+
+# Environment files
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
