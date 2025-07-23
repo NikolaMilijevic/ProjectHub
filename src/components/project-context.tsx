@@ -11,7 +11,7 @@ interface Project {
   initialStatus: string;
   priorityLevel: string;
   progress: number;
-  id: string;
+  id?: string;
   createdAt: string;
 }
 

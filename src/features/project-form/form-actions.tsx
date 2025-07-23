@@ -1,16 +1,18 @@
 import { useRouter } from "@tanstack/react-router";
 import { useFormikContext } from "formik";
-import { Button } from "../../components/ui/button";
+import type { FormValues } from "./types";
 import ConfirmDialog from "../../components/ui/confirm-dialog";
+import { Button } from "../../components/ui/button";
 
 const FormActions = () => {
-  const { isSubmitting, isValid, resetForm } = useFormikContext();
+  const { isSubmitting, isValid, resetForm } = useFormikContext<FormValues>();
   const router = useRouter();
 
   const handleCancel = () => {
-  resetForm();
-  router.navigate({ to: '/dashboard'});
-  }
+    resetForm();
+    router.navigate({ to: "/dashboard" });
+  };
+
   return (
     <div className="grid grid-cols-[150px_1fr] gap-2 border-t-1 pt-10">
       <ConfirmDialog
@@ -21,15 +23,15 @@ const FormActions = () => {
         description="This action cannot be undone. This will clear your form and return you to dashboard."
         onConfirm={handleCancel}
       />
-      <Button 
+      <Button
         type="submit"
-        className="bg-violet-400 hover:bg-violet-500" 
-        disabled={isSubmitting || !isValid}  
+        className="bg-violet-400 hover:bg-violet-500"
+        disabled={isSubmitting || !isValid}
       >
-        {isSubmitting ? 'Creating...' : '+ Create Project'}
+        {isSubmitting ? "Creating..." : "+ Create Project"}
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default FormActions
+export default FormActions;

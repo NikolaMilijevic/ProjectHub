@@ -11,23 +11,51 @@ import FormActions from '../features/project-form/form-actions';
 import { validationSchema } from '../features/project-form/validation-schema';
 import type { FormValues } from '../features/project-form/types';
 import { initialValues } from '../features/project-form/constants';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createProject } from '../api/create-project';
+import {toast} from 'react-hot-toast'
 
 const NewProjectForm: React.FC = () => { 
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const { addProject } = useProjectContext(); 
+
+  const mutation = useMutation({
+    mutationFn: createProject,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      router.navigate({ to: '/dashboard' });
+    },
+    onError: (error) => {
+      console.error('Failed to create project:', error);
+    }
+  });
 
   const handleSubmit = (values: FormValues, { setSubmitting, resetForm }: any) => {
     const newProject = {
       ...values,
+      startDate: new Date(values.startDate).toISOString(),
+      dueDate: new Date(values.dueDate).toISOString(),
       createdAt: new Date().toISOString(),
-      id: crypto.randomUUID(),
     }
-    console.log('Form submitted:', values);
-    addProject(newProject);
-    setSubmitting(false);
-    resetForm();
-    router.navigate({to: '/dashboard'});
+    console.log('Submitting to API:', newProject)
+   
+    mutation.mutate(newProject, {
+      onSuccess: () => {
+        toast.success('Project successfully created!')
+        resetForm();
+        addProject(newProject);
+        router.navigate({ to: '/dashboard' });
+      },
+      onError: (error) => {
+        toast.error('Unexpected error occured!')
+        console.error('Failed to create project!', error);
+      },
+      onSettled: () => {
+        setSubmitting(false);
+      }
+    });
   };
 
   return (
@@ -41,14 +69,12 @@ const NewProjectForm: React.FC = () => {
             onSubmit={handleSubmit}
             validateOnMount={true}
           >
-            {() => (
               <Form className="grid gap-4">
                 <BasicInfo />
                 <FinancialTimeline />
                 <StatusProgress />
                 <FormActions />
               </Form>
-            )}
           </Formik>
         </div>
     </div>

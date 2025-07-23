@@ -5,11 +5,14 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import NewProjectForm from './pages/new-project';
 import DashboardPage from './components/dashboard';
 import { ProjectProvider } from './components/project-context';
+import NotFoundPage from './pages/not-found';
+import {Toaster} from 'react-hot-toast'
 
 const queryClient = new QueryClient();
 
 const rootRoute = createRootRoute({
-  component: () => <Outlet />
+  component: () => <Outlet />,
+  notFoundComponent: () => <NotFoundPage />
 });
 
 const dashboardRoute = createRoute({
@@ -26,8 +29,9 @@ const newProjectRoute = createRoute({
 
 const routeTree = rootRoute.addChildren({
   dashboardRoute,
-  newProjectRoute
+  newProjectRoute,
 });
+
 
 const router = createRouter ({ routeTree });
 
@@ -37,6 +41,7 @@ const App = () => {
       <ProjectProvider>
         <ReactQueryDevtools />
         <RouterProvider router={router} />
+        <Toaster position='top-center' />
       </ProjectProvider>
     </QueryClientProvider>
   )

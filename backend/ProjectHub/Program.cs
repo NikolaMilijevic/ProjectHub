@@ -1,5 +1,5 @@
-using ProjectHub.Data;
 using Microsoft.EntityFrameworkCore;
+using Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
