@@ -3,7 +3,7 @@ import { RouterProvider, Outlet, createRoute, createRouter, createRootRoute } fr
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import NewProjectForm from './pages/new-project';
-import DashboardPage from './components/dashboard';
+import DashboardPage from './pages/dashboard';
 import { ProjectProvider } from './components/project-context';
 import NotFoundPage from './pages/not-found';
 import {Toaster} from 'react-hot-toast'

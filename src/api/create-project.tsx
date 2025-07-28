@@ -4,18 +4,14 @@ export async function createProject(newProject: FormValues): Promise<FormValues>
   const response = await fetch('https://localhost:7128/api/projects', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(newProject)
+    body: JSON.stringify({ project: newProject })
   });
 
-  if (!response.ok) {
-    let errorMessage = 'Failed to create project';
-    try {
-      const errorData = await response.json();
-      errorMessage = errorData?.title || JSON.stringify(errorData) || errorMessage;
-    } catch {
-    }
-    throw new Error(errorMessage);
-  }
+ if (!response.ok) {
+  const errorData = await response.json();
+  console.error('Validation errors:', errorData);
+  throw new Error('Validation failed');
+}
 
   return response.json();
 }

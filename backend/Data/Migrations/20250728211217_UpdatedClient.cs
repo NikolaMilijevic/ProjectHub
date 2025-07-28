@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace ProjectHub.Migrations
+namespace Data.Migrations
 {
     /// <inheritdoc />
-    public partial class update2 : Migration
+    public partial class UpdatedClient : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

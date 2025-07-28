@@ -37,10 +37,11 @@ const NewProjectForm: React.FC = () => {
       ...values,
       startDate: new Date(values.startDate).toISOString(),
       dueDate: new Date(values.dueDate).toISOString(),
-      createdAt: new Date().toISOString(),
     }
     console.log('Submitting to API:', newProject)
    
+    console.log("Form values being sent:", JSON.stringify(newProject, null, 2));
+
     mutation.mutate(newProject, {
       onSuccess: () => {
         toast.success('Project successfully created!')

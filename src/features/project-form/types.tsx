@@ -10,3 +10,5 @@ export interface FormValues {
   progress: number;
   createdAt: string;
 }
+
+export type CreateProjectPayload = Omit<FormValues, 'createdAt'>;
