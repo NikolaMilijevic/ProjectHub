@@ -28,7 +28,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, o
   });
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-br from-violet-300 via-violet-600 to-indigo-900 bg-opacity-50 z-50">
       <div className="bg-white rounded-md p-6 max-w-lg w-full">
         <h2 className="text-xl font-bold mb-4">Edit Project</h2>
         <form onSubmit={formik.handleSubmit} className="space-y-4">

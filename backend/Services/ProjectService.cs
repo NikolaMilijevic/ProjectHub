@@ -1,0 +1,112 @@
+﻿using Data.Entity;
+using Data.Enum;
+using Data;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Services
+{
+    public class ProjectService : IProjectService
+    {
+        private readonly ProjectHubDbContext _context;
+
+        public ProjectService(ProjectHubDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IEnumerable<Projects>> GetAllProjectsAsync() =>
+            await _context.Projects.Include(p => p.Client).ToListAsync();
+
+        public async Task<Projects?> GetProjectByIdAsync(int id) =>
+            await _context.Projects.Include(p => p.Client).FirstOrDefaultAsync(p => p.Id == id);
+
+        public async Task<Projects> CreateProjectAsync(Projects project)
+        {
+            project.StartDate = DateTime.SpecifyKind(project.StartDate, DateTimeKind.Utc);
+            project.DueDate = DateTime.SpecifyKind(project.DueDate, DateTimeKind.Utc);
+            project.CreatedAt = DateTime.UtcNow;
+
+            _context.Projects.Add(project);
+            await _context.SaveChangesAsync();
+            return project;
+        }
+
+        public async Task<Projects?> UpdateProjectAsync(int id, Projects updatedProject)
+        {
+            var existing = await _context.Projects.Include(p => p.Client).FirstOrDefaultAsync(p => p.Id == id);
+            if (existing == null) return null;
+
+            existing.ProjectTitle = updatedProject.ProjectTitle;
+            existing.Description = updatedProject.Description;
+            existing.Budget = updatedProject.Budget;
+            existing.StartDate = updatedProject.StartDate;
+            existing.DueDate = updatedProject.DueDate;
+            existing.InitialStatus = updatedProject.InitialStatus;
+            existing.PriorityLevel = updatedProject.PriorityLevel;
+            existing.Progress = updatedProject.Progress;
+
+            if (updatedProject.Client != null)
+                existing.Client.ClientName = updatedProject.Client.ClientName;
+
+            await _context.SaveChangesAsync();
+            return existing;
+        }
+
+        public async Task<Projects?> PatchProjectAsync(int id, Dictionary<string, object> updates)
+        {
+            var existing = await _context.Projects.Include(p => p.Client).FirstOrDefaultAsync(p => p.Id == id);
+            if (existing == null) return null;
+
+            foreach (var (key, value) in updates)
+            {
+                switch (key.ToLower())
+                {
+                    case "projecttitle": existing.ProjectTitle = value.ToString(); break;
+                    case "description": existing.Description = value.ToString(); break;
+                    case "budget": existing.Budget = Convert.ToDecimal(value); break;
+                    case "startdate": existing.StartDate = Convert.ToDateTime(value).ToUniversalTime(); break;
+                    case "duedate": existing.DueDate = Convert.ToDateTime(value).ToUniversalTime(); break;
+                    case "initialstatus": existing.InitialStatus = (InitialStatus)Convert.ToInt32(value); break;
+                    case "prioritylevel": existing.PriorityLevel = (PriorityLevel)Convert.ToInt32(value); break;
+                    case "progress": existing.Progress = Convert.ToInt32(value); break;
+                    case "client":
+                        if (value is Dictionary<string, object> clientData)
+                        {
+                            if (existing.Client == null) existing.Client = new Client();
+                            if (clientData.TryGetValue("clientName", out var clientName))
+                                existing.Client.ClientName = clientName.ToString();
+                        }
+                        break;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            return existing;
+        }
+
+        public async Task<bool> DeleteProjectAsync(int id)
+        {
+            var project = await _context.Projects.FindAsync(id);
+            if (project == null) return false;
+
+            _context.Projects.Remove(project);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteClientAsync(int id)
+        {
+            var client = await _context.Clients.FindAsync(id);
+            if (client == null) return false;
+
+            _context.Clients.Remove(client);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+    }
+}
