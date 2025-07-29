@@ -14,7 +14,6 @@ export function useDeleteProject() {
   return useMutation({
     mutationFn:(id: number) => deleteProject(id),
     onSuccess: () => {
-      // Invalidate and refetch projects after delete
     queryClient.invalidateQueries({ queryKey: ['projects'] });
     },
   });

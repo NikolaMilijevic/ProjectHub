@@ -1,4 +1,4 @@
-import NewProjectButton from "./ui/new-project-button";
+import NewProjectButton from "../ui/new-project-button";
 
 const DashboardHeader = () => {
   return (

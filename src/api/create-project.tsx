@@ -9,7 +9,7 @@ export async function createProject(newProject: FormValues): Promise<FormValues>
     startDate: newProject.startDate,
     dueDate: newProject.dueDate,
     initialStatus: newProject.initialStatus,
-    riorityLevel: newProject.priorityLevel,
+    priorityLevel: newProject.priorityLevel,
     progress: newProject.progress
   };
 

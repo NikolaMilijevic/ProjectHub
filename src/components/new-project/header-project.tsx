@@ -1,4 +1,4 @@
-import DashboardButton from "./ui/dashboard-button";
+import DashboardButton from "../ui/dashboard-button";
 
 
 const Header = () => {

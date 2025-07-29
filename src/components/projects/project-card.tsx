@@ -1,8 +1,8 @@
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Edit, User, Calendar, Trash2 } from "lucide-react";
-import { Progress } from "./ui/progress";
-import ConfirmDialog from "./ui/confirm-dialog";
-import BadgeList from "./badge-list";
+import { Progress } from "../ui/progress";
+import ConfirmDialog from "../ui/confirm-dialog";
+import BadgeList from "./badge/badge-list";
 import { formatDate } from "./date-utils";
 
 interface ProjectCardProps {

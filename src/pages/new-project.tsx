@@ -1,9 +1,8 @@
 import { Formik, Form } from 'formik';
 import React from 'react';
 import { useRouter } from '@tanstack/react-router';
-import { useProjectContext } from '../components/project-context';
-import Header from '../components/header-project';
-import ProjectInformation from '../components/project-information';
+import Header from '../components/new-project/header-project';
+import ProjectInformation from '../components/new-project/project-information';
 import BasicInfo from '../features/project-form/basic-info';
 import FinancialTimeline from '../features/project-form/financial-timeline';
 import StatusProgress from '../features/project-form/status-progress';
@@ -18,8 +17,6 @@ import {toast} from 'react-hot-toast'
 const NewProjectForm: React.FC = () => { 
   const router = useRouter();
   const queryClient = useQueryClient();
-
-  const { addProject } = useProjectContext(); 
 
   const mutation = useMutation({
     mutationFn: createProject,
@@ -46,7 +43,6 @@ const NewProjectForm: React.FC = () => {
       onSuccess: () => {
         toast.success('Project successfully created!')
         resetForm();
-        addProject(newProject);
         router.navigate({ to: '/dashboard' });
       },
       onError: (error) => {
