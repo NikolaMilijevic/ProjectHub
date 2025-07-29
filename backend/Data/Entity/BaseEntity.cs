@@ -12,7 +12,7 @@ namespace Data.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public T? Id { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
     }
 }

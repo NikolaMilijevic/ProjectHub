@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { Edit, User, Calendar } from "lucide-react";
+import { Edit, User, Calendar, Trash2 } from "lucide-react";
 import { Progress } from "./ui/progress";
 import ConfirmDialog from "./ui/confirm-dialog";
 import BadgeList from "./badge-list";
@@ -8,18 +8,20 @@ import { formatDate } from "./date-utils";
 interface ProjectCardProps {
   project: any;
   onDelete: (id: string) => void;
+  onEdit: (project: any) => void;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete }) => (
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete, onEdit }) => (
   <div className="border-l-4 border-l-violet-500/20 rounded-lg shadow p-4 min-h-70 flex flex-col justify-between">
     <div className="flex justify-between">
       <h2 className="text-base sm:text-lg font-bold">{project.projectTitle}</h2>
       <div>
-        <Button className="ml-2 bg-white text-black">
+        <Button className="ml-2 bg-white text-black" onClick={() => onEdit(project)}>
           <Edit />
         </Button>
         <ConfirmDialog
-          triggerLabel="Cancel"
+          triggerLabel="Delete"
+          triggerIcon={<Trash2 className="w-4 h-4 text-red-500" />}
           triggerVariant="destructive"
           className="bg-white text-red-500 ml-2"
           title="Are you sure?"
@@ -34,7 +36,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete }) => (
     <div className="mt-auto">
       <div className="text-sm text-gray-400 mb-0 mt-0 flex items-center min-h-12">
         <User className="w-4 h-4 mr-1" />
-        {project.client}
+        {project.client?.clientName || "No client."}
       </div>
 
       <div className="flex justify-between">

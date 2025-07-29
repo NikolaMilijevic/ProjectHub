@@ -1,7 +1,7 @@
 export const getBadgeClass = (type: string, value: string) => {
   const statusColors: Record<string, string> = {
     Planning: "bg-yellow-300 text-yellow-700 mr-3 rounded-2xl",
-    "In Progress": "bg-blue-300 text-blue-700 mr-3 rounded-2xl",
+    InProgress: "bg-blue-300 text-blue-700 mr-3 rounded-2xl",
     Completed: "bg-green-300 text-green-700 mr-3 rounded-2xl",
   };
 

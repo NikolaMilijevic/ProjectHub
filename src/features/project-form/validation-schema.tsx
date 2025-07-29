@@ -59,7 +59,7 @@ export const validationSchema = Yup.object({
   .min(Yup.ref('startDate'), 'Due Date must be after Start Date')
   .required('Due Date is required'),
   initialStatus: Yup.string()
-  .oneOf(['Planning', 'In Progress', 'Completed'], 'Invalid status')
+  .oneOf(['Planning', 'InProgress', 'Completed'], 'Invalid status')
   .required('Status is required'),
   priorityLevel: Yup.string()
   .oneOf(['Low', 'Medium', 'High'], 'Invalid priority level')

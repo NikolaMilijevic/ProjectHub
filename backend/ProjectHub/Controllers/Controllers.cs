@@ -20,6 +20,15 @@ namespace ProjectHub.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Projects>>> GetProjects()
+        {
+            var projects = await _context.Projects
+                                         .Include(p => p.Client)
+                                         .ToListAsync();
+            return Ok(projects);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Projects>> CreateProject([FromBody] Projects project)
         {
@@ -34,6 +43,7 @@ namespace ProjectHub.Controllers
 
                 project.StartDate = DateTime.SpecifyKind(project.StartDate, DateTimeKind.Utc);
                 project.DueDate = DateTime.SpecifyKind(project.DueDate, DateTimeKind.Utc);
+                project.CreatedAt = DateTime.SpecifyKind(project.CreatedAt, DateTimeKind.Utc);
 
 
                 _context.Projects.Add(project);

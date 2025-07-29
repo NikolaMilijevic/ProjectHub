@@ -1,8 +1,9 @@
 import { useState } from "react";
 
 interface SearchFiltersProps {
-  onChange: (status: string, priority: string) => void;
+  onChange: (filters: { status: string; priority: string }) => void;
 }
+
 
 const SearchFilters: React.FC<SearchFiltersProps> = ({ onChange }) => {
   const [status, setStatus] = useState("All Status");
@@ -10,12 +11,12 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ onChange }) => {
 
   const handleStatusChange = (newStatus: string) => {
     setStatus(newStatus);
-    onChange(newStatus, priority);
+    onChange({status: newStatus, priority});
   };
 
   const handlePriorityChange = (newPriority: string) => {
     setPriority(newPriority);
-    onChange(status, newPriority);
+    onChange({status, priority: newPriority});
   };
 
   return (
@@ -38,7 +39,7 @@ const SearchFilters: React.FC<SearchFiltersProps> = ({ onChange }) => {
         onChange={(e) => handlePriorityChange(e.target.value)}
         className="w-30 p-2 border rounded"
       >
-        <option value="All Priority">All Priority</option>
+        <option value="">All Priority</option>
         <option value="Low">Low</option>
         <option value="Medium">Medium</option>
         <option value="High">High</option>

@@ -9,15 +9,25 @@ interface SearchComponentProps {
 
 const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
   const initialValues = { searchTerm: "" };
-  const [status, setStatus] = useState("All Status");
-  const [priority, setPriority] = useState("All Priority");
+  const [status, setStatus] = useState("");
+  const [priority, setPriority] = useState("");
 
-  const handleFilterChange = (term: string, newStatus = status, newPriority = priority) => {
+  const [term, setTerm] = useState("");
+
+  const handleFilterChange = (
+    newTerm: string = term,
+    newStatus: string = status,
+    newPriority: string = priority
+  ) => {
     onSearch({
-      term,
-      status: newStatus,
-      priority: newPriority,
+      term: newTerm,
+      status: newStatus === "All Status" ? "" : newStatus,
+      priority: newPriority === "All Priority" ? "" : newPriority,
     });
+
+    setTerm(newTerm);
+    setStatus(newStatus);
+    setPriority(newPriority);
   };
 
   return (
@@ -47,27 +57,27 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ onSearch }) => {
       <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:flex-grow-0">
         <select
           name="status"
-          value={status}
+          value={status || "All Status"}
           onChange={(e) => {
             const newStatus = e.target.value;
             setStatus(newStatus);
-            handleFilterChange("", newStatus, priority);
+            handleFilterChange(term, newStatus, priority);
           }}
           className="w-full sm:w-40 p-2 border rounded"
         >
           <option value="All Status">All Status</option>
           <option value="Planning">Planning</option>
-          <option value="In Progress">In Progress</option>
+          <option value="InProgress">In Progress</option>
           <option value="Completed">Completed</option>
         </select>
 
         <select
           name="priority"
-          value={priority}
+          value={priority || "All Priority"}
           onChange={(e) => {
             const newPriority = e.target.value;
             setPriority(newPriority);
-            handleFilterChange("", status, newPriority);
+            handleFilterChange(term, status, newPriority);
           }}
           className="w-full sm:w-40 p-2 border rounded"
         >

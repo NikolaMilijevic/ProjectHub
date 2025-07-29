@@ -3,6 +3,7 @@ import { useProjectContext } from "../components/project-context";
 import DashboardHeader from "../components/dashboard-header";
 import SearchComponent from "../components/search-component";
 import ProjectList from "../components/project-list";
+import ProjectsContainer from "../components/project-container";
 
 
 const DashboardPage: React.FC = () => {
@@ -19,17 +20,12 @@ const DashboardPage: React.FC = () => {
   return (
     <div>
       <DashboardHeader />
-      <div className="pt-20 sm:pt-10">
+      {/* <div className="pt-20 sm:pt-10">
         <SearchComponent />
-      </div>
+      </div> */}
 
-      <div className="w-full max-w-4xl mx-auto mt-4 px-4 flex justify-center">
-        <p className="text-gray-400 text-sm sm:text-base break-words text-center">
-          Showing {filteredProjects.length} of {projects.length}
-        </p>
-      </div>
-
-      <ProjectList projects={filteredProjects} onDelete={(id) => deleteProjects(id)} />
+      {/* <ProjectList projects={filteredProjects} onDelete={(id) => deleteProjects(id)} /> */}
+      <ProjectsContainer />
 
     </div>
   );
