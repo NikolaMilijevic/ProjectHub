@@ -15,7 +15,7 @@ export const validationSchema = Yup.object({
   .min(3, 'ProjectTitle must be at least 3 characters')
   .max(100, 'ProjectTitle must be at most 100 characters')
   .required('ProjectTitle is required'),
-  client: Yup.string()
+  clientName: Yup.string()
   .transform(value =>
     typeof value === 'string'
     ? value.trim().replace(/\s+/g, ' ')

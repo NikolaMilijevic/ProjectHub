@@ -1,6 +1,6 @@
 export interface FormValues {
   projectTitle: string;
-  client: string;
+  clientName: string;
   description: string;
   budget: number;
   startDate: string;
