@@ -3,7 +3,7 @@ import type { FormValues } from "../features/project-form/types";
 export async function createProject(newProject: FormValues): Promise<FormValues> {
   const payload = {
     projectTitle: newProject.projectTitle,
-    client: { clientName: newProject.clientName },
+    client: { clientName: newProject.client?.clientName } ,
     description: newProject.description,
     budget: newProject.budget,
     startDate: newProject.startDate,

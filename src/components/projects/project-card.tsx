@@ -4,11 +4,12 @@ import { Progress } from "../ui/progress";
 import ConfirmDialog from "../ui/confirm-dialog";
 import BadgeList from "./badge/badge-list";
 import { formatDate } from "./date-utils";
+import type { Project } from "../../features/project-form/types";
 
 interface ProjectCardProps {
-  project: any;
+  project: Project;
   onDelete: (id: string) => void;
-  onEdit: (project: any) => void;
+  onEdit: (project: Project) => void;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete, onEdit }) => (

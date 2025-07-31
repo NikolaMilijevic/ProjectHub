@@ -11,6 +11,7 @@ import ErrorMessage from "./error-message";
 import EmptyState from "./empty-state";
 
 import { useState } from "react";
+import type { Project } from "../../features/project-form/types";
 
 const ProjectsContainer = () => {
   const { data: projects = [], isLoading, error } = useProjects();
@@ -25,11 +26,11 @@ const ProjectsContainer = () => {
     deleteProject(id);
   };
 
-  const handleEdit = (project: any) => {
+  const handleEdit = (project: Project) => {
     setEditingProject(project);
   };
 
-  const handleSave = (updatedProject: any) => {
+  const handleSave = (updatedProject: Project) => {
     updateProjectHandler(updatedProject);
     setEditingProject(null);
   };

@@ -1,4 +1,6 @@
-export function getEditInitialValues(project: any) {
+import type { Project } from "../../features/project-form/types";
+
+export function getEditInitialValues(project: Project) {
   return {
     projectTitle: project.projectTitle || "",
     description: project.description || "",

@@ -1,9 +1,10 @@
+import type { Project } from "../../features/project-form/types";
 import ProjectCard from "./project-card";
 
 interface ProjectListProps {
-  projects: any[];
+  projects: Project[];
   onDelete: (id: string) => void;
-  onEdit: (project: any) => void;
+  onEdit: (project: Project) => void;
   view: "grid" | "list";
 }
 
@@ -20,7 +21,7 @@ const ProjectList: React.FC<ProjectListProps> = ({ projects, onDelete, onEdit, v
   return (
     <div className="w-full max-w-6xl mx-auto p-4">
       <div className={containerClass}>
-          {projects.map((project: any) => (
+          {projects.map((project: Project) => (
             <ProjectCard key={project.id} project={project} onDelete={onDelete} onEdit={onEdit} />
           ))}
       </div>

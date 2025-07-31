@@ -2,7 +2,9 @@ import type { FormValues } from "./types";
 
 export const initialValues: FormValues = {
   projectTitle: '',
-  clientName: '',
+  client: {
+    clientName: '',
+  },
   description: '',
   budget: 0,
   startDate: '',
@@ -10,5 +12,4 @@ export const initialValues: FormValues = {
   initialStatus: 'Planning',
   priorityLevel: 'Low',
   progress: 0,
-  createdAt: '',
 };

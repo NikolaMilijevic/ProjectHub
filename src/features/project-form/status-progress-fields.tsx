@@ -58,7 +58,7 @@ export const basicInfoFields = [
     placeholder: "Enter a clear, descriptive title for your project"
   },
   {
-    name: "clientName",
+    name: "client.clientName",
     label: "Client*",
     type: "text",
     placeholder: "Enter client or company name",

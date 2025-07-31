@@ -1,4 +1,4 @@
-import NewProjectButton from "../ui/new-project-button";
+import NavigationButton from "../ui/navigation-button";
 
 const DashboardHeader = () => {
   return (
@@ -15,7 +15,7 @@ const DashboardHeader = () => {
         </div>
       </div>
       <div className="px-4 sm:px-0">
-        <NewProjectButton buttonText="+ New Project" />
+        <NavigationButton buttonText="+ New Project" buttonRoute="/new-project" icon="" className="bg-violet-400 hover:bg-violet-500 ml-5 text-white hover:text-white p-4" />
       </div>
     </header>
   );

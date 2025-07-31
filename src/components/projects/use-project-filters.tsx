@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import type { Project } from "../../features/project-form/types";
 
 export interface Filters {
   term: string;
@@ -6,7 +7,7 @@ export interface Filters {
   priority: string;
 }
 
-export function useProjectFilters(projects: any[]) {
+export function useProjectFilters(projects: Project[]) {
   const [filters, setFilters] = useState<Filters>({ term: "", status: "", priority: "" });
 
   const filteredProjects = useMemo(() => {

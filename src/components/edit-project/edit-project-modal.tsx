@@ -6,9 +6,10 @@ import TextInput from "./edit-inputs/edit-text-input";
 import NumberInput from "./edit-inputs/edit-number-input";
 import DateInput from "./edit-inputs/edit-date-input";
 import SelectInput from "./edit-inputs/edit-select-input";
+import type { Project } from "../../features/project-form/types";
 
 interface EditProjectModalProps {
-  project: any;
+  project: Project;
   onClose: () => void;
   onSave: (updatedProject: any) => void;
 }

@@ -1,6 +1,8 @@
 export interface FormValues {
   projectTitle: string;
-  clientName: string;
+  client: {
+    clientName: string
+  }
   description: string;
   budget: number;
   startDate: string;
@@ -8,7 +10,11 @@ export interface FormValues {
   initialStatus: string;
   priorityLevel: string;
   progress: number;
-  createdAt: string;
 }
 
-export type CreateProjectPayload = Omit<FormValues, 'createdAt'>;
+export type CreateProjectPayload = FormValues;
+
+export type Project = FormValues & {
+  id: string;
+  createdAt: string;
+};
