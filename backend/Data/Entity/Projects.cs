@@ -24,6 +24,7 @@ namespace Data.Entity
         public PriorityLevel PriorityLevel { get; set; }
         [Range(0, 100)]
         public int Progress { get; set; } = 0;
+        public DateTime? LastModified { get; set; } = DateTime.UtcNow;
 
     }
 }

@@ -12,19 +12,19 @@ interface ProjectCardProps {
   onEdit: (project: Project) => void;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete, onEdit }) => (
+const ProjectCard = ({ project, onDelete, onEdit }: ProjectCardProps) => (
   <div className="border-l-4 border-l-violet-500/20 rounded-lg shadow p-4 min-h-70 flex flex-col justify-between">
     <div className="flex justify-between">
       <h2 className="text-base sm:text-lg font-bold">{project.projectTitle}</h2>
       <div>
-        <Button className="ml-2 bg-white text-black" onClick={() => onEdit(project)}>
+        <Button className="ml-2 bg-white text-black hover:text-white" onClick={() => onEdit(project)}>
           <Edit />
         </Button>
         <ConfirmDialog
           triggerLabel="Delete"
           triggerIcon={<Trash2 className="w-4 h-4 text-red-500" />}
           triggerVariant="destructive"
-          className="bg-white text-red-500 ml-2"
+          className="bg-white text-red-500 ml-2 hover:text-white"
           title="Are you sure?"
           description="This action cannot be undone. This will permanently delete the project."
           onConfirm={() => onDelete(project.id)}
@@ -56,8 +56,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onDelete, onEdit }) 
         </div>
         <div className="flex items-center">
           <Calendar className="w-4 h-4 text-violet-600 mr-1" />
-          <p className="font-bold mr-2">Due</p>
-          <p>{formatDate(project.dueDate)}</p>
+          <p className="font-bold mr-2">Modified</p>
+          <p>{formatDate(project.lastModified)}</p>
         </div>
       </div>
     </div>

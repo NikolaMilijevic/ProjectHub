@@ -17,4 +17,5 @@ export type CreateProjectPayload = FormValues;
 export type Project = FormValues & {
   id: string;
   createdAt: string;
+  lastModified?: string;
 };

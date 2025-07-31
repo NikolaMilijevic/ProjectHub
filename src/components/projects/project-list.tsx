@@ -8,7 +8,7 @@ interface ProjectListProps {
   view: "grid" | "list";
 }
 
-const ProjectList: React.FC<ProjectListProps> = ({ projects, onDelete, onEdit, view }) => {
+const ProjectList = ({ projects, onDelete, onEdit, view }: ProjectListProps) => {
   if (projects.length === 0) {
     return <p className="text-gray-400 text-center max-w-md mx-auto mt-20">No projects yet</p>;
   }

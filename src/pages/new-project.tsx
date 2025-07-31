@@ -1,5 +1,4 @@
 import { Formik, Form } from 'formik';
-import React from 'react';
 import { useRouter } from '@tanstack/react-router';
 import Header from '../components/new-project/header-project';
 import ProjectInformation from '../components/new-project/project-information';
@@ -14,7 +13,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createProject } from '../api/create-project';
 import {toast} from 'react-hot-toast'
 
-const NewProjectForm: React.FC = () => { 
+const NewProjectForm = () => { 
   const router = useRouter();
   const queryClient = useQueryClient();
 

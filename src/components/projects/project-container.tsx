@@ -42,6 +42,7 @@ const ProjectsContainer = () => {
   const handleViewChange = (newView: "grid" | "list") => {
     setView(newView);
   };
+  
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorMessage message={(error as Error).message} />;

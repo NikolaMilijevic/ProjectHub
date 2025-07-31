@@ -30,6 +30,7 @@ namespace Services
             project.StartDate = DateTime.SpecifyKind(project.StartDate, DateTimeKind.Utc);
             project.DueDate = DateTime.SpecifyKind(project.DueDate, DateTimeKind.Utc);
             project.CreatedAt = DateTime.UtcNow;
+            project.LastModified = DateTime.UtcNow;
 
             _context.Projects.Add(project);
             await _context.SaveChangesAsync();
@@ -52,6 +53,8 @@ namespace Services
 
             if (updatedProject.Client != null)
                 existing.Client.ClientName = updatedProject.Client.ClientName;
+
+            existing.LastModified = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return existing;
@@ -84,6 +87,8 @@ namespace Services
                         break;
                 }
             }
+
+            existing.LastModified = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return existing;

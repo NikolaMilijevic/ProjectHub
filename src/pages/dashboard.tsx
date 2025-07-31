@@ -2,7 +2,7 @@ import DashboardHeader from "../components/dashboard/dashboard-header";
 import ProjectsContainer from "../components/projects/project-container";
 
 
-const DashboardPage: React.FC = () => {
+const DashboardPage = () => {
 
   return (
     <div>

@@ -1,4 +1,3 @@
-import React from "react";
 import { Search } from "lucide-react";
 
 interface SearchInputProps {
@@ -6,7 +5,7 @@ interface SearchInputProps {
   onChange: (value: string) => void;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ value, onChange }) => (
+const SearchInput = ({ value, onChange }: SearchInputProps) => (
   <div className="flex items-center border rounded px-2 py-1 flex-grow">
     <Search className="w-5 h-5 text-gray-500 mr-2" />
     <input

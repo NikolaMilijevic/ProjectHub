@@ -1,4 +1,3 @@
-import React from "react";
 
 interface FilterSelectProps {
   value: string;
@@ -6,7 +5,7 @@ interface FilterSelectProps {
   options: { label: string; value: string }[];
 }
 
-const FilterSelect: React.FC<FilterSelectProps> = ({ value, onChange, options }) => (
+const FilterSelect = ({ value, onChange, options }: FilterSelectProps) => (
   <select
     value={value}
     onChange={(e) => onChange(e.target.value)}

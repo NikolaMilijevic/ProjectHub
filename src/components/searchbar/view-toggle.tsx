@@ -16,13 +16,13 @@ const ViewToggle: React.FC<ViewToggleProps> = ({ view, onChange }) => (
   >
     <ToggleGroup.Item
       value="grid"
-      className="p-2 hover:bg-gray-100 data-[state=on]:bg-violet-200 rounded"
+      className="p-2 hover:bg-gray-100 data-[state=on]:bg-violet-300 data-[state=on]:text-white rounded"
     >
       <Grid3x3 />
     </ToggleGroup.Item>
     <ToggleGroup.Item
       value="list"
-      className="p-2 hover:bg-gray-100 data-[state=on]:bg-violet-200 rounded"
+      className="p-2 hover:bg-gray-100 data-[state=on]:bg-violet-300 data-[state=on]:text-white rounded"
     >
       <Menu />
     </ToggleGroup.Item>

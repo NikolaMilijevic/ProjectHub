@@ -40,7 +40,7 @@ const ConfirmDialog = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button type={triggerType} variant={triggerVariant} className={className}>
+        <Button type={triggerType} variant={triggerVariant} className={className}> 
           {triggerIcon ? triggerIcon : triggerLabel}
         </Button>
       </AlertDialogTrigger>

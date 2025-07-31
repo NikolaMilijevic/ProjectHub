@@ -1,4 +1,3 @@
-import React from "react";
 import { useFormik } from "formik";
 import { getEditInitialValues } from "./edit-initial-values";
 import { editProjectValidationSchema } from "./edit-validation";
@@ -14,7 +13,7 @@ interface EditProjectModalProps {
   onSave: (updatedProject: any) => void;
 }
 
-const EditProjectModal: React.FC<EditProjectModalProps> = ({ project, onClose, onSave }) => {
+const EditProjectModal = ({ project, onClose, onSave }: EditProjectModalProps) => {
   const formik = useFormik({
     initialValues: getEditInitialValues(project),
     validationSchema: editProjectValidationSchema,
