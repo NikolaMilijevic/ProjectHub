@@ -10,7 +10,7 @@ const DashboardHeader = () => {
           className="h-12 w-12 rounded-2xl flex-shrink-0"
         />
         <div className="min-w-0">
-          <h1 className="text-2xl font-bold truncate">ProjectHub</h1>
+          <p className="text-2xl font-bold truncate">ProjectHub</p>
           <p className="text-gray-500 truncate">Manage your project efficiently</p>
         </div>
       </div>

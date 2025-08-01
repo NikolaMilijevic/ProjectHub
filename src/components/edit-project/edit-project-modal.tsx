@@ -18,9 +18,11 @@ const EditProjectModal = ({ project, onClose, onSave }: EditProjectModalProps) =
     initialValues: getEditInitialValues(project),
     validationSchema: editProjectValidationSchema,
     onSubmit: (values) => {
+      const { clientName, ...rest} = values;
       onSave({
         ...project,
-        ...values,
+        ...rest,
+        client: { clientName },
         startDate: new Date(values.startDate).toISOString(),
         dueDate: new Date(values.dueDate).toISOString(),
       });

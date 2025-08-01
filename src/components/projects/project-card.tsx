@@ -15,7 +15,7 @@ interface ProjectCardProps {
 const ProjectCard = ({ project, onDelete, onEdit }: ProjectCardProps) => (
   <div className="border-l-4 border-l-violet-500/20 rounded-lg shadow p-4 min-h-70 flex flex-col justify-between">
     <div className="flex justify-between">
-      <h2 className="text-base sm:text-lg font-bold">{project.projectTitle}</h2>
+      <p className="text-base sm:text-lg font-bold">{project.projectTitle}</p>
       <div>
         <Button className="ml-2 bg-white text-black hover:text-white" onClick={() => onEdit(project)}>
           <Edit />

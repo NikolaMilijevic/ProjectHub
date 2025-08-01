@@ -1,5 +1,4 @@
 import { Formik, Form } from 'formik';
-import { useRouter } from '@tanstack/react-router';
 import Header from '../components/new-project/header-project';
 import ProjectInformation from '../components/new-project/project-information';
 import BasicInfo from '../features/project-form/basic-info';
@@ -9,47 +8,25 @@ import FormActions from '../features/project-form/form-actions';
 import { validationSchema } from '../features/project-form/validation-schema';
 import type { FormValues } from '../features/project-form/types';
 import { initialValues } from '../features/project-form/constants';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createProject } from '../api/create-project';
-import {toast} from 'react-hot-toast'
+import { useCreateProject } from '../api/hooks/use-create-project'; 
 
 const NewProjectForm = () => { 
-  const router = useRouter();
-  const queryClient = useQueryClient();
+  const mutation = useCreateProject();
 
-  const mutation = useMutation({
-    mutationFn: createProject,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] });
-      router.navigate({ to: '/dashboard' });
-    },
-    onError: (error) => {
-      console.error('Failed to create project:', error);
-    }
-  });
-
-  const handleSubmit = (values: FormValues, { setSubmitting, resetForm }: any) => {
+  const handleSubmit = (
+    values: FormValues,
+    { setSubmitting, resetForm }: { setSubmitting: (isSubmitting: boolean) => void; resetForm: () => void }
+  ) => {
     const newProject = {
       ...values,
       startDate: new Date(values.startDate).toISOString(),
       dueDate: new Date(values.dueDate).toISOString(),
-    }
-    console.log('Submitting to API:', newProject)
-   
-    console.log("Form values being sent:", JSON.stringify(newProject, null, 2));
+    };
 
     mutation.mutate(newProject, {
-      onSuccess: () => {
-        toast.success('Project successfully created!')
-        resetForm();
-        router.navigate({ to: '/dashboard' });
-      },
-      onError: (error) => {
-        toast.error('Unexpected error occured!')
-        console.error('Failed to create project!', error);
-      },
       onSettled: () => {
         setSubmitting(false);
+        resetForm();
       }
     });
   };

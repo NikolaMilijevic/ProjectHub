@@ -2,9 +2,9 @@ import ProjectList from "./project-list";
 import EditProjectModal from "../edit-project/edit-project-modal";
 import SearchBar from "../searchbar/searchbar";
 
-import { useProjects } from "../../api/hooks";
+import { useProjects } from "../../api/hooks/use-projects";
 import { useProjectFilters } from "./use-project-filters";
-import { useProjectMutations } from "./handler";
+import { useProjectMutations } from "../../api/hooks/use-project-mutations";
 
 import Loading from "./loading";
 import ErrorMessage from "./error-message";
