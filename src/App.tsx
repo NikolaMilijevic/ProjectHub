@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import NewProjectForm from './pages/new-project';
 import DashboardPage from './pages/dashboard';
 import NotFoundPage from './pages/not-found';
+import ViewProject from './pages/view-project';
 import {Toaster} from 'react-hot-toast'
 
 const queryClient = new QueryClient();
@@ -25,6 +26,12 @@ const newProjectRoute = createRoute({
   path: '/new-project',
   component: NewProjectForm
 });
+
+// const viewProjectRoute = createRoute({
+//   getParentRoute: () => rootRoute,
+//   path: `/view-project${id}`,
+//   component: ViewProject
+// })
 
 const routeTree = rootRoute.addChildren({
   dashboardRoute,
