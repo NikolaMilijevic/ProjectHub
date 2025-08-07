@@ -23,6 +23,7 @@ interface ConfirmDialogProps {
   triggerVariant?: "default" | "outline" | "secondary" | "ghost" | "destructive";
   triggerType?: "button" | "submit" | "reset";
   triggerIcon?: React.ReactNode;
+  alertDialogTriggerColors?: string;
 }
 
 const ConfirmDialog = ({
@@ -36,10 +37,11 @@ const ConfirmDialog = ({
   triggerVariant = "default",
   triggerType = "button",
   triggerIcon,
+  alertDialogTriggerColors
 }: ConfirmDialogProps) => {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
+      <AlertDialogTrigger className={alertDialogTriggerColors} asChild> 
         <Button type={triggerType} variant={triggerVariant} className={className}> 
           {triggerIcon ? triggerIcon : triggerLabel}
         </Button>

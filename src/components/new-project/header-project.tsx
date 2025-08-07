@@ -1,7 +1,10 @@
 import NavigationButton from "../ui/navigation-button";
 
+interface HeaderProps {
+  headerText?: string,
+}
 
-const Header = () => {
+const Header = ({headerText = "Create New Project"} : HeaderProps) => {
 
   return (
     <div className="border-b border-gray-200 bg-white">
@@ -9,7 +12,7 @@ const Header = () => {
         <div className="flex items-center gap-3">
           <NavigationButton buttonText="Back To Projects" />
           <p className="text-lg sm:text-xl font-bold border-l border-gray-200 pl-3">
-              Create New Project
+              {headerText}
           </p>
         </div>
       </div>

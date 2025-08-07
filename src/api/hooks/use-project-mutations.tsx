@@ -5,8 +5,8 @@ export function useProjectMutations() {
   const deleteMutation = useDeleteProject();
   const updateMutation = useUpdateProject();
 
-  const deleteProject = (id: string) => {
-    deleteMutation.mutate(Number(id));
+  const deleteProject = (id: string, options?: { onSuccess?: () => void; onError?: (error: unknown) => void; }) => {
+    deleteMutation.mutate(Number(id), options);
   };
 
   const updateProjectHandler = (project: Project) => {

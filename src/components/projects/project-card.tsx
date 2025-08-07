@@ -1,10 +1,10 @@
-import { Button } from "../ui/button";
-import { Edit, User, Calendar, Trash2 } from "lucide-react";
+import { User, Calendar, } from "lucide-react";
 import { Progress } from "../ui/progress";
-import ConfirmDialog from "../ui/confirm-dialog";
 import BadgeList from "./badge/badge-list";
 import { formatDate } from "./date-utils";
 import type { Project } from "../../features/project-form/types";
+import { Link } from "@tanstack/react-router";
+import { viewProjectRoute}  from "../../App"
 
 interface ProjectCardProps {
   project: Project;
@@ -12,24 +12,15 @@ interface ProjectCardProps {
   onEdit: (project: Project) => void;
 }
 
-const ProjectCard = ({ project, onDelete, onEdit }: ProjectCardProps) => (
+const ProjectCard = ({ project }: ProjectCardProps) => (
+  <Link 
+    to={viewProjectRoute.to}
+    params={{ projectId: project.id }}
+    className="hover:bg-violet-50 hover:shadow-lg hover:scale-[1.01] transition duration-200 ease-in-out transform"
+  >
   <div className="border-l-4 border-l-violet-500/20 rounded-lg shadow p-4 min-h-70 flex flex-col justify-between">
     <div className="flex justify-between">
       <p className="text-base sm:text-lg font-bold">{project.projectTitle}</p>
-      <div>
-        <Button className="ml-2 bg-white text-black hover:text-white" onClick={() => onEdit(project)}>
-          <Edit />
-        </Button>
-        <ConfirmDialog
-          triggerLabel="Delete"
-          triggerIcon={<Trash2 className="w-4 h-4 text-red-500" />}
-          triggerVariant="destructive"
-          className="bg-white text-red-500 ml-2 hover:text-white"
-          title="Are you sure?"
-          description="This action cannot be undone. This will permanently delete the project."
-          onConfirm={() => onDelete(project.id)}
-        />
-      </div>
     </div>
 
     <p className="text-xs sm:text-sm text-gray-400">{project.description}</p>
@@ -62,6 +53,7 @@ const ProjectCard = ({ project, onDelete, onEdit }: ProjectCardProps) => (
       </div>
     </div>
   </div>
+  </Link>
 );
 
 export default ProjectCard;

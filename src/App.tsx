@@ -27,15 +27,16 @@ const newProjectRoute = createRoute({
   component: NewProjectForm
 });
 
-// const viewProjectRoute = createRoute({
-//   getParentRoute: () => rootRoute,
-//   path: `/view-project${id}`,
-//   component: ViewProject
-// })
+export const viewProjectRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/view-project/$projectId",
+  component: ViewProject
+})
 
 const routeTree = rootRoute.addChildren({
   dashboardRoute,
   newProjectRoute,
+  viewProjectRoute
 });
 
 
