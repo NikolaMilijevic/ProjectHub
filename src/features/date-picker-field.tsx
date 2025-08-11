@@ -7,6 +7,7 @@ import { Popover, PopoverTrigger, PopoverContent } from "../components/ui/popove
 import { Button } from "../components/ui/button";
 import { format, parseISO } from "date-fns";
 import { Label } from "../components/ui/label";
+import { CalendarIcon } from "lucide-react";
 
 interface DatePickerFieldProps {
   name: string;
@@ -34,6 +35,7 @@ export default function DatePickerField({ name, label, placeholder }: DatePicker
             className="w-full justify-start"
             id={name}
           >
+            <CalendarIcon className="w-5 h-5 text-gray-500" />
             {selectedDate ? format(selectedDate, "PPP") : placeholder ?? `Select ${label.toLowerCase()}`}
           </Button>
         </PopoverTrigger>

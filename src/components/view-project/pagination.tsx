@@ -1,4 +1,11 @@
-import { Button } from "../ui/button";
+import {
+  Pagination as PaginationNav,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+} from "../ui/pagination";
 
 interface PaginationProps {
   currentPage: number;
@@ -6,49 +13,69 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const buttonClass = "bg-violet-700 text-white hover:bg-violet-500 hover:text-white disabled:opacity-20";
+const ShadcnPagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
+  if (totalPages <= 1) return null;
 
-export function Pagination({
-  currentPage,
-  totalPages,
-  onPageChange,
-}: PaginationProps) {
+  const handleClick = (page: number) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      onPageChange(page);
+    }
+  };
+
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
   return (
-    <div className="flex items-center justify-center space-x-2 my-4">
-      <Button
-        className={buttonClass}
-        variant="outline"
-        size="sm"
-        disabled={currentPage === 1}
-        onClick={() => onPageChange(currentPage - 1)}
-      >
-        Previous
-      </Button>
+    <PaginationNav className="my-4">
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious
+            href="#"
+            aria-disabled={currentPage === 1}
+            onClick={(e) => {
+                if(currentPage === 1) {
+                    e.preventDefault();
+                    return;
+                }
+                onPageChange(currentPage - 1);
+            }}
+            className={currentPage === 1 ? "text-white bg-violet-700/20 hover:text-white hover:bg-violet-700/20" :  "text-white bg-violet-700 hover:text-white hover:bg-violet-500"}
+          />
+        </PaginationItem>
 
-      {Array.from({ length: totalPages }, (_, i) => {
-        const page = i + 1;
-        return (
-          <Button
-            className={page === currentPage ? "bg-violet-700 text-white hover:bg-violet-900 hover:text-white" : "bg-violet-300 text-white hover:bg-violet-400 hover:text-white"}
-            key={page}
-            variant={page === currentPage ? "default" : "outline"}
-            size="sm"
-            onClick={() => onPageChange(page)}
-          >
-            {page}
-          </Button>
-        );
-      })}
+        {pages.map((page) => (
+          <PaginationItem key={page}>
+            <PaginationLink
+              href="#"
+              isActive={page === currentPage}
+              onClick={handleClick(page)}
+              className={page === currentPage
+                ? "text-white bg-violet-400 hover:bg-violet-300 hover:text-white" 
+                : "bg-white text-gray-700 hover:bg-violet-100"
+            }
+            >
+              {page}
+            </PaginationLink>
+          </PaginationItem>
+        ))}
 
-      <Button
-        className={buttonClass}
-        variant="outline"
-        size="sm"
-        disabled={currentPage === totalPages}
-        onClick={() => onPageChange(currentPage + 1)}
-      >
-        Next
-      </Button>
-    </div>
+        <PaginationItem>
+          <PaginationNext
+            href="#"
+            aria-disabled={currentPage === totalPages}
+            onClick={(e) => {
+                if(currentPage === totalPages) {
+                    e.preventDefault();
+                    return;
+                }
+                onPageChange(currentPage + 1);
+              }}
+            className={currentPage === totalPages ? "text-white bg-violet-700/20 hover:text-white hover:bg-violet-700/20" :  "text-white bg-violet-700 hover:text-white hover:bg-violet-500"}
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </PaginationNav>
   );
-}
+};
+
+export default ShadcnPagination;

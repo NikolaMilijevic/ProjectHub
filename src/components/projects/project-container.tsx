@@ -13,7 +13,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { Project } from "../../features/project-form/types";
 
 import debounce from "lodash/debounce";
-import { Pagination } from "../view-project/pagination";
+import ShadcnPagination from "../view-project/pagination";
 
 
 const ProjectsContainer = () => {
@@ -109,7 +109,7 @@ const ProjectsContainer = () => {
       )}
 
       {(data?.totalPages?? 0) > 1 && (
-        <Pagination
+        <ShadcnPagination
           currentPage={currentPage}
           totalPages={data?.totalPages ?? 0}
           onPageChange={setCurrentPage}
