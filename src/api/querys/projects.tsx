@@ -1,6 +1,7 @@
 import api from '../axios-instance';
 import type { Project } from '../../features/project-form/types';
 import type { FormValues } from '../../features/project-form/types';
+import type { PagedResult } from '../hooks/use-projects';
 
 export async function getProjects(): Promise<Project[]> {
   try {
@@ -15,6 +16,14 @@ export async function getProjects(): Promise<Project[]> {
 export async function getProjectById(id: number): Promise<Project> {
   const res = await api.get(`/projects/${id}`);
   return res.data;
+}
+
+export async function getProjectPaged(pageNumber: number, pageSize: number, search = '', status = '', priority = '', sortBy = 'createdAt', sortOrder = 'desc'): Promise<PagedResult<Project>> {
+  const { data } = await api.get(`/projects/paged`, {
+    params: { pageNumber, pageSize, search, status, priority, sortBy, sortOrder },
+  });
+  console.log('Paged data:', data);
+  return data;
 }
 
 export async function createProject(newProject: FormValues): Promise<FormValues> {

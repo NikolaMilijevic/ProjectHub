@@ -52,7 +52,11 @@ const ViewProject = () => {
 
     updateProject.mutate(updated, {
     onSuccess: () => {
+      toast.success('Project successfully updated!',  {duration: 4000, style: {background: "#d1fae5", color: "#065f46", border: "1px solid #34d399"}});
       navigate({ to: "/dashboard" });
+    },
+    onError: () => {
+      toast.error('Unexpected error occurred!', {duration: 5000, style: {background: "#fee2e2", color: "#991b1b", border: "1px solid #f87171"}});
     },
     onSettled: () => setSubmitting(false),
   });

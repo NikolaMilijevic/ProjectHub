@@ -5,7 +5,27 @@ import {
   createProject,
   updateProject,
   deleteProject,
+  getProjectPaged,
 } from '../querys/projects';
+import type { Project } from '../../features/project-form/types';
+
+export interface PagedResult<T> {
+  items: T[];
+  pageNumber: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+}
+
+interface UseProjectPagedParams {
+  pageNumber: number;
+  pageSize: number;
+  search?: string;
+  status?: string;
+  priority?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+}
 
 export function useProjects() {
   return useQuery({
@@ -19,6 +39,13 @@ export function useProject(id: number) {
     queryKey: ['projects', id],
     queryFn: () => getProjectById(id),
     enabled: !!id,
+  });
+}
+
+export function useProjectPaged({ pageNumber, pageSize, search = '', status = '', priority = '', sortBy = 'createdAt', sortOrder = 'desc' }: UseProjectPagedParams) {
+  return useQuery<PagedResult<Project>, Error>({
+    queryKey: ['projects', pageNumber, pageSize, search, status, priority, sortBy, sortOrder],
+    queryFn: () => getProjectPaged(pageNumber, pageSize, search, status, priority, sortBy, sortOrder)
   });
 }
 

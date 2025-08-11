@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data.Dtos;
 
 namespace Services
 {
@@ -24,6 +25,63 @@ namespace Services
 
         public async Task<Projects?> GetProjectByIdAsync(int id) =>
             await _context.Projects.Include(p => p.Client).FirstOrDefaultAsync(p => p.Id == id);
+
+        public async Task<PagedResult<Projects>> GetProjectsPagedAsync(int pageNumber, int pageSize, string? search, string? status, string?priority, string? sortBy, string? sortOrder)
+        {
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            var query = _context.Projects.Include(p => p.Client).AsQueryable();
+
+            if(!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(p =>
+                    p.ProjectTitle.ToLower().Contains(search) ||
+                    p.Client.ClientName.ToLower().Contains(search) ||
+                    p.Description.ToLower().Contains(search));
+            }
+
+            if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<InitialStatus>(status, true, out var statusEnum))
+            {
+                // Assuming InitialStatus is a string enum or string property
+                query = query.Where(p => p.InitialStatus == statusEnum);
+            }
+
+            if (!string.IsNullOrWhiteSpace(priority) && Enum.TryParse<PriorityLevel>(priority, true, out var priorityEnum))
+            {
+                // Assuming PriorityLevel is a string enum or string property
+                query = query.Where(p => p.PriorityLevel == priorityEnum);
+            }
+
+            query = (sortBy?.ToLower(), sortOrder?.ToLower()) switch
+            {
+                ("title", "asc") => query.OrderBy(p => p.ProjectTitle),
+                ("title", "desc") => query.OrderByDescending(p => p.ProjectTitle),
+                ("client", "asc") => query.OrderBy(p => p.Client.ClientName),
+                ("client", "desc") => query.OrderByDescending(p => p.Client.ClientName),
+                ("budget", "asc") => query.OrderBy(p => p.Budget),
+                ("budget", "desc") => query.OrderByDescending(p => p.Budget),
+                ("createdAt", "asc") => query.OrderBy(p => p.CreatedAt),
+                ("createdAt", "desc") => query.OrderByDescending(p => p.CreatedAt),
+                _ => query.OrderByDescending(p => p.CreatedAt)
+            };
+
+            var totalItems = await query.CountAsync();
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<Projects>
+            {
+                Items = items,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalItems = totalItems,
+                TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
+            };
+        }
 
         public async Task<Projects> CreateProjectAsync(Projects project)
         {
@@ -113,5 +171,6 @@ namespace Services
             await _context.SaveChangesAsync();
             return true;
         }
+
     }
 }

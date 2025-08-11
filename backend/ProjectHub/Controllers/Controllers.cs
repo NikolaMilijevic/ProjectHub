@@ -32,6 +32,21 @@ namespace ProjectHub.Controllers
             return project == null ? NotFound() : Ok(project);
         }
 
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetProjectsPaged(
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? search = null,
+            [FromQuery] string? status = null,
+            [FromQuery] string? priority = null,
+            [FromQuery] string? sortBy = "createdAt",
+            [FromQuery] string? sortOrder = "desc"
+        )
+        {
+            var pagedResult = await _service.GetProjectsPagedAsync(pageNumber, pageSize, search, status, priority, sortBy, sortOrder); 
+            return Ok(pagedResult);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateProject([FromBody] Projects project)
         {
@@ -63,5 +78,6 @@ namespace ProjectHub.Controllers
         [HttpDelete("client/{id}")]
         public async Task<IActionResult> DeleteClient(int id) =>
             await _service.DeleteClientAsync(id) ? NoContent() : NotFound();
+
     }
 }
