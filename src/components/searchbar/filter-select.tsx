@@ -1,3 +1,4 @@
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 interface FilterSelectProps {
   value: string;
@@ -6,17 +7,18 @@ interface FilterSelectProps {
 }
 
 const FilterSelect = ({ value, onChange, options }: FilterSelectProps) => (
-  <select
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    className="border rounded p-2"
-  >
-    {options.map(({ label, value: val }) => (
-      <option key={val} value={val}>
-        {label}
-      </option>
-    ))}
-  </select>
+  <Select value={value} onValueChange={onChange}>
+    <SelectTrigger className="w-fit">
+      <SelectValue placeholder={options[0].label} />
+    </SelectTrigger>
+    <SelectContent>
+      {options.map(({ label, value: val }) => (
+        <SelectItem key={val} value={val}>
+          {label}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
 );
 
 export default FilterSelect;

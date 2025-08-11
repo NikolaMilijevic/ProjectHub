@@ -42,12 +42,12 @@ const ProjectCard = ({ project }: ProjectCardProps) => (
       <div className="mt-5 flex justify-between text-sm text-gray-400">
         <div className="flex items-center">
           <Calendar className="w-4 h-4 text-green-600 mr-1" />
-          <p className="font-bold mr-2">Created</p>
+          <p className="font-bold mr-1">Created</p>
           <p>{formatDate(project.createdAt, true)}</p>
         </div>
         <div className="flex items-center">
           <Calendar className="w-4 h-4 text-violet-600 mr-1" />
-          <p className="font-bold mr-2">Modified</p>
+          <p className="font-bold mr-1">Modified</p>
           <p>{formatDate(project.lastModified)}</p>
         </div>
       </div>

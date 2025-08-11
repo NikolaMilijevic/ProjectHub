@@ -1,5 +1,8 @@
-import { Field, ErrorMessage } from "formik";
+import { ErrorMessage, useFormikContext, useField } from "formik";
 import { Label } from "../../components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
+import { Textarea } from "../../components/ui/textarea";
+import { Input } from "../../components/ui/input";
 
 interface FieldInputProps {
   name: string;
@@ -10,32 +13,56 @@ interface FieldInputProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const inputClass = "w-full p-2 border rounded";
+const FieldInput = ({ name, label, type = "text", placeholder, options, onKeyDown }: FieldInputProps) => {
+  const { setFieldValue } = useFormikContext();
+  const [field] = useField(name);
+  
+  return (
+    <div className="mb-5">
+      <Label htmlFor={name} className="mb-3 block">
+        {label}
+      </Label>
 
-const FieldInput = ({ name, label, type = "text", placeholder, options, onKeyDown }: FieldInputProps) => (
-  <div className="mb-5">
-    <Label htmlFor={name} className="mb-3">{label}</Label>
+      {type === "select" ? (
+        <Select
+          value={field.value}
+          onValueChange={(val) => setFieldValue(name, val)}
+        >
+          <SelectTrigger id={name} className="w-full">
+            <SelectValue placeholder={placeholder ?? "Select an option"} />
+          </SelectTrigger>
+          <SelectContent>
+            {options?.map((option) => (
+              <SelectItem key={option} value={option}>
+                {option}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      ) : type === "textarea" ? (
+        <Textarea
+          id={name}
+          {...field}
+          placeholder={placeholder}
+        />
+      ) : (
+        <Input
+          id={name}
+          type={type}
+          {...field}
+          placeholder={placeholder}
+          onKeyDown={onKeyDown}
+        />
+      )}
 
-    {type === "select" ? (
-      <Field as="select" id={name} name={name} className={inputClass}>
-        {options?.map(option => (
-          <option key={option} value={option}>{option}</option>
-        ))}
-      </Field>
-    ) : (
-      <Field
-        as={type === "textarea" ? "textarea" : "input"}
-        id={name}
+      <ErrorMessage
         name={name}
-        type={type !== "textarea" ? type : undefined}
-        placeholder={placeholder}
-        onKeyDown={onKeyDown}
-        className={inputClass}
+        component="div"
+        className="text-red-500 text-sm mt-1"
       />
-    )}
+    </div>
+  );
+};
 
-    <ErrorMessage name={name} component="div" className="text-red-500 text-sm" />
-  </div>
-);
 
 export default FieldInput;

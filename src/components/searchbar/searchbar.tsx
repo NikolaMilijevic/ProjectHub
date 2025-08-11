@@ -19,32 +19,34 @@ interface SearchBarProps {
 }
 
 const STATUS_OPTIONS = [
-  { label: "All Status", value: "" },
+  { label: "All Status", value: "All Status" },
   { label: "Planning", value: "Planning" },
   { label: "In Progress", value: "InProgress" },
   { label: "Completed", value: "Completed" },
 ];
 
 const PRIORITY_OPTIONS = [
-  { label: "All Priority", value: "" },
+  { label: "All Priority", value: "All Priority" },
   { label: "Low", value: "Low" },
   { label: "Medium", value: "Medium" },
   { label: "High", value: "High" },
 ];
 
 const SORT_OPTIONS = [
-  { label: "Newest First", value: "dateDesc" },
-  { label: "Oldest First", value: "dateAsc" },
+  { label: "Newest First", value: "createdAt|desc" },
+  { label: "Oldest First", value: "createdAt|asc" },
 ]
 
 const DEFAULT_DEBOUNCE_MS = 1000;
 
 const SearchBar = ({ filters, onSearch, onViewChange }: SearchBarProps) => {
   const [localTerm, setLocalTerm] = useState(filters.term ?? "");
-  const [view, setView] = useState<"grid" | "list">("grid");
+  const [view, setView] = useState<"grid" | "list">(
+    () => (localStorage.getItem("viewMode") as "grid" | "list") || "grid"
+  );
   const inputRef = useRef<HTMLInputElement>(null);
-
   const filtersRef = useRef(filters);
+
   useEffect(() => {
     filtersRef.current = filters;
     if(filters.term !== localTerm) {
@@ -88,11 +90,13 @@ const SearchBar = ({ filters, onSearch, onViewChange }: SearchBarProps) => {
 
   const handleSortChange = (value: string) => {
     debouncedSearchRef.current.cancel();
-    onSearch({ ...filtersRef.current, sortBy: value});
+    const [field, order] = value.split("|") as [string, "asc" | "desc"];
+    onSearch({ ...filtersRef.current, sortBy: field, sortOrder: order });
   };
 
   const handleViewChange = (newView: "grid" | "list") => {
     setView(newView);
+    localStorage.setItem("viewMode", newView);
     onViewChange(newView);
   };
 
@@ -101,7 +105,7 @@ const SearchBar = ({ filters, onSearch, onViewChange }: SearchBarProps) => {
       <SearchInput ref={inputRef} value={localTerm} onChange={handleTermChange} />
       <FilterSelect value={filters.status} onChange={handleStatusChange} options={STATUS_OPTIONS} />
       <FilterSelect value={filters.priority} onChange={handlePriorityChange} options={PRIORITY_OPTIONS} />
-      <FilterSelect value={filters.sortBy} onChange={handleSortChange} options={SORT_OPTIONS} />
+      <FilterSelect value={`${filters.sortBy}|${filters.sortOrder ?? "desc"}`} onChange={handleSortChange} options={SORT_OPTIONS} />
       <ViewToggle view={view} onChange={handleViewChange} />
     </div>
   );

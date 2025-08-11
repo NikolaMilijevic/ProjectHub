@@ -43,13 +43,11 @@ namespace Services
 
             if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<InitialStatus>(status, true, out var statusEnum))
             {
-                // Assuming InitialStatus is a string enum or string property
                 query = query.Where(p => p.InitialStatus == statusEnum);
             }
 
             if (!string.IsNullOrWhiteSpace(priority) && Enum.TryParse<PriorityLevel>(priority, true, out var priorityEnum))
             {
-                // Assuming PriorityLevel is a string enum or string property
                 query = query.Where(p => p.PriorityLevel == priorityEnum);
             }
 
@@ -61,8 +59,8 @@ namespace Services
                 ("client", "desc") => query.OrderByDescending(p => p.Client.ClientName),
                 ("budget", "asc") => query.OrderBy(p => p.Budget),
                 ("budget", "desc") => query.OrderByDescending(p => p.Budget),
-                ("createdAt", "asc") => query.OrderBy(p => p.CreatedAt),
-                ("createdAt", "desc") => query.OrderByDescending(p => p.CreatedAt),
+                ("createdat", "asc") => query.OrderBy(p => p.CreatedAt),
+                ("createdat", "desc") => query.OrderByDescending(p => p.CreatedAt),
                 _ => query.OrderByDescending(p => p.CreatedAt)
             };
 

@@ -13,12 +13,15 @@ import { useEffect, useMemo, useState } from "react";
 import type { Project } from "../../features/project-form/types";
 
 import debounce from "lodash/debounce";
+import { Pagination } from "../view-project/pagination";
 
 
 const ProjectsContainer = () => {
   const { deleteProject, updateProjectHandler } = useProjectMutations();
   
-  const [view, setView] = useState<"grid" | "list">("grid");
+  const [view, setView] = useState<"grid" | "list">(
+    () => (localStorage.getItem("viewMode") as "grid" | "list") || "grid"
+  );
   const [rawFilters, setRawFilters] = useState({
     term: "",
     status: "",
@@ -75,6 +78,7 @@ const ProjectsContainer = () => {
 
   const handleViewChange = (newView: "grid" | "list") => {
     setView(newView);
+    localStorage.setItem("viewMode", newView);
   };
   
   useEffect(() => {
@@ -105,39 +109,11 @@ const ProjectsContainer = () => {
       )}
 
       {(data?.totalPages?? 0) > 1 && (
-        <div className="flex justify-center items-center gap-2 my-4">
-          <button
-          disabled={currentPage === 1}
-          onClick={() => {
-            setCurrentPage(p => p - 1)
-          }}
-          className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Prev
-          </button>
-          {Array.from({ length: data?.totalPages ?? 0 }, (_, i) => (
-            <button
-            key={i+1}
-            onClick={() => {
-              setCurrentPage(i + 1)
-            }}
-            className={`px-3 py-1 rounded ${
-              currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'
-            }`}
-            >
-              {i + 1}
-            </button>
-          ))}
-          <button
-          disabled={data?.pageNumber === data?.totalPages}
-          onClick={() => {
-            setCurrentPage(p => p + 1)
-          }}
-          className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={data?.totalPages ?? 0}
+          onPageChange={setCurrentPage}
+        />
       )}
       
       {editingProject && (
