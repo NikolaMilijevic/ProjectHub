@@ -42,20 +42,37 @@ const ViewProject = () => {
   const updateProject = useUpdateProject();
   const {deleteProject} = useProjectMutations();
 
-  if (isLoading) return <Loading />
-  if (isError || !data) return <p className="flex justify-center items-center h-screen">Failed to load project.</p>;
-
-  const initialValues: FormValues = {
-    ...data,
-    id: data.id,
-    startDate: data.startDate.split("T")[0],
-    dueDate: data.dueDate.split("T")[0],
-  };
+ const initialValues: FormValues = data
+    ? {
+        id: data.id,
+        projectTitle: data.projectTitle ?? "",
+        client: data.client ?? { clientName: "" },
+        description: data.description ?? "",
+        budget: data.budget ?? 0,
+        initialStatus: data.initialStatus ?? "All status",
+        priorityLevel: data.priorityLevel ?? "All priority",
+        startDate: data.startDate.split("T")[0],
+        dueDate: data.dueDate.split("T")[0],
+        progress: data.progress ?? 0,
+      }
+    : {
+        id: "",
+        projectTitle: "",
+        client: { clientName: "" },
+        description: "",
+        budget: 0,
+        initialStatus: "All status",
+        priorityLevel: "All priority",
+        startDate: new Date().toISOString().split("T")[0],
+        dueDate: new Date().toISOString().split("T")[0],
+        progress: 0,
+      };
 
   const handleSubmit = (
     values: FormValues,
     { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
   ) => {
+    if(!data) return;
     const updated: Project = {
       ...values,
       id: data.id,
@@ -80,7 +97,14 @@ const ViewProject = () => {
   return (
     <div>
       <Header headerText="View Project" />
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 lg:my-6 py-6 shadow rounded-xl mt-10 bg-white">
+      {isLoading ? (
+        <Loading />
+      ) : isError || !data ? (
+        <p className="flex justify-center items-center h-screen">
+          Failed to load project.
+        </p>
+      ) : (
+        <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 lg:my-6 py-6 shadow rounded-xl mt-10 bg-white">
         <ProjectInformation 
           projectDescription="View, edit and delete project information." 
           deleteDialog={
@@ -137,6 +161,7 @@ const ViewProject = () => {
           </Form>
         </Formik>
       </div>
+      )}
     </div>
   );
 };
