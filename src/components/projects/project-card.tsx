@@ -9,7 +9,6 @@ import { viewProjectRoute}  from "../../App"
 interface ProjectCardProps {
   project: Project;
   onDelete: (id: string) => void;
-  onEdit: (project: Project) => void;
 }
 
 const ProjectCard = ({ project }: ProjectCardProps) => (

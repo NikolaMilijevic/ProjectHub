@@ -13,9 +13,10 @@ interface DatePickerFieldProps {
   name: string;
   label: string;
   placeholder?: string;
+  disabled?: boolean;
 }
 
-export default function DatePickerField({ name, label, placeholder }: DatePickerFieldProps) {
+export default function DatePickerField({ name, label, placeholder, disabled = false }: DatePickerFieldProps) {
   const { setFieldValue, setFieldTouched } = useFormikContext();
   const [field] = useField(name);
   const [open, setOpen] = React.useState(false);
@@ -34,6 +35,7 @@ export default function DatePickerField({ name, label, placeholder }: DatePicker
             variant="outline"
             className="w-full justify-start"
             id={name}
+            disabled={disabled}
           >
             <CalendarIcon className="w-5 h-5 text-gray-500" />
             {selectedDate ? format(selectedDate, "PPP") : placeholder ?? `Select ${label.toLowerCase()}`}

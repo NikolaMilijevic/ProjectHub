@@ -5,6 +5,7 @@ import {
   PaginationLink,
   PaginationPrevious,
   PaginationNext,
+  PaginationEllipsis
 } from "../ui/pagination";
 
 interface PaginationProps {
@@ -23,7 +24,33 @@ const ShadcnPagination = ({ currentPage, totalPages, onPageChange }: PaginationP
     }
   };
 
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  const getPages = (): (number | "...")[] => {
+    const pages: (number | "...")[] = [];
+    const maxVisible = 5;
+    const half = Math.floor(maxVisible / 2);
+
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= half + 1) {
+        for (let i = 1; i <= maxVisible - 1; i++) pages.push(i);
+        pages.push("...");
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - half) {
+        pages.push(1);
+        pages.push("...");
+        for (let i = totalPages - (maxVisible - 2); i <= totalPages; i++) pages.push(i);
+      } else {
+        pages.push(1);
+        pages.push("...");
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) pages.push(i);
+        pages.push("...");
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
 
   return (
     <PaginationNav className="my-4">
@@ -43,8 +70,13 @@ const ShadcnPagination = ({ currentPage, totalPages, onPageChange }: PaginationP
           />
         </PaginationItem>
 
-        {pages.map((page) => (
-          <PaginationItem key={page}>
+        {getPages().map((page, idx) =>
+          page === "..." ? (
+            <PaginationItem key={`elipsis-${idx}`}>
+              <PaginationEllipsis />
+            </PaginationItem>
+          ) : (
+            <PaginationItem key={page}>
             <PaginationLink
               href="#"
               isActive={page === currentPage}
@@ -57,7 +89,8 @@ const ShadcnPagination = ({ currentPage, totalPages, onPageChange }: PaginationP
               {page}
             </PaginationLink>
           </PaginationItem>
-        ))}
+          )
+        )}
 
         <PaginationItem>
           <PaginationNext

@@ -4,11 +4,10 @@ import ProjectCard from "./project-card";
 interface ProjectListProps {
   projects: Project[];
   onDelete: (id: string) => void;
-  onEdit: (project: Project) => void;
   view: "grid" | "list";
 }
 
-const ProjectList = ({ projects, onDelete, onEdit, view }: ProjectListProps) => {
+const ProjectList = ({ projects, onDelete, view }: ProjectListProps) => {
   if (projects.length === 0) {
     return <p className="text-gray-400 text-center max-w-md mx-auto mt-20">No projects yet</p>;
   }
@@ -22,7 +21,7 @@ const ProjectList = ({ projects, onDelete, onEdit, view }: ProjectListProps) => 
     <div className="w-full max-w-6xl mx-auto p-4">
       <div className={containerClass}>
           {projects.map((project: Project) => (
-            <ProjectCard key={project.id} project={project} onDelete={onDelete} onEdit={onEdit} />
+            <ProjectCard key={project.id} project={project} onDelete={onDelete} />
           ))}
       </div>
     </div>

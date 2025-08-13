@@ -11,9 +11,10 @@ interface FieldInputProps {
   placeholder?: string;
   options?: string[];
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 }
 
-const FieldInput = ({ name, label, type = "text", placeholder, options, onKeyDown }: FieldInputProps) => {
+const FieldInput = ({ name, label, type = "text", placeholder, options, onKeyDown, disabled = false }: FieldInputProps) => {
   const { setFieldValue } = useFormikContext();
   const [field] = useField(name);
   
@@ -27,6 +28,7 @@ const FieldInput = ({ name, label, type = "text", placeholder, options, onKeyDow
         <Select
           value={field.value}
           onValueChange={(val) => setFieldValue(name, val)}
+          disabled={disabled}
         >
           <SelectTrigger id={name} className="w-full">
             <SelectValue placeholder={placeholder ?? "Select an option"} />
@@ -44,6 +46,7 @@ const FieldInput = ({ name, label, type = "text", placeholder, options, onKeyDow
           id={name}
           {...field}
           placeholder={placeholder}
+          disabled={disabled}
         />
       ) : (
         <Input
@@ -52,6 +55,7 @@ const FieldInput = ({ name, label, type = "text", placeholder, options, onKeyDow
           {...field}
           placeholder={placeholder}
           onKeyDown={onKeyDown}
+          disabled={disabled}
         />
       )}
 

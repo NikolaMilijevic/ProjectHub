@@ -5,7 +5,7 @@ import ConfirmDialog from "../../components/ui/confirm-dialog";
 import { Button } from "../../components/ui/button";
 
 const FormActions = () => {
-  const { isSubmitting, isValid, resetForm, values } = useFormikContext<FormValues>();
+  const { isSubmitting, isValid, dirty, resetForm, values } = useFormikContext<FormValues>();
   const router = useRouter();
 
   const handleCancel = () => {
@@ -21,14 +21,18 @@ const FormActions = () => {
         triggerLabel="Cancel"
         triggerVariant="outline"
         className="bg-white-300 text-black-200"
-        title="Are you sure?"
-        description="This action cannot be undone. This will clear your form and return you to dashboard."
-        onConfirm={handleCancel}
+        title={isEditMode ? "Discard Changes?" : "Cancel New Project?"}
+        description={
+          isEditMode
+            ? "Are you sure you want to discard your edits? Any unsaved changes will be lost."
+            : "Are you sure you want to cancel creating this project? Your input will be lost."
+        }        onConfirm={handleCancel}
+        disabled={!dirty || isSubmitting}
       />
       <Button
         type="submit"
         className="bg-violet-400 hover:bg-violet-500"
-        disabled={isSubmitting || !isValid}
+        disabled={isSubmitting || !isValid || !dirty}
       >
         {isSubmitting
           ? isEditMode

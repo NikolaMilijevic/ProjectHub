@@ -2,8 +2,11 @@ import { financialTimelineFields } from "./status-progress-fields";
 import FieldInput from "./base-fields";
 import DatePickerField from "../date-picker-field";
 
+interface FinancialTimelineProps {
+  disabled?: boolean;
+}
 
-const FinancialTimeline = () => {
+const FinancialTimeline = ({ disabled = false }: FinancialTimelineProps) => {
   return (
     <div className="mb-3">
         <div className="border-b-1 mb-5">
@@ -18,10 +21,11 @@ const FinancialTimeline = () => {
                 name={field.name}
                 label={field.label}
                 placeholder={field.placeholder}
+                disabled={disabled}
               />
             );
           } else {
-            return <FieldInput key={field.name} {...field} />;
+            return <FieldInput key={field.name} {...field} disabled={disabled} />;
           }
         })}
       </div>
