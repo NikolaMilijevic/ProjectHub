@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Data;
 using System.Text.Json.Serialization;
-using Services;
+using Services.Services.Project;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProjectHubDbContext>(options =>
 options.UseNpgsql(builder.Configuration["ConnectionStrings:DefaultConnection"]));
 builder.Services.AddScoped<IProjectService, ProjectService>();
-
 
 var app = builder.Build();
 

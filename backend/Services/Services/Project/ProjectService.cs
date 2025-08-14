@@ -2,14 +2,9 @@
 using Data.Enum;
 using Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Data.Dtos;
 
-namespace Services
+namespace Services.Services.Project
 {
     public class ProjectService : IProjectService
     {
@@ -20,13 +15,13 @@ namespace Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Projects>> GetAllProjectsAsync() =>
+        public async Task<IEnumerable<ProjectService>> GetAllProjectsAsync() =>
             await _context.Projects.Include(p => p.Client).ToListAsync();
 
-        public async Task<Projects?> GetProjectByIdAsync(int id) =>
+        public async Task<ProjectService?> GetProjectByIdAsync(int id) =>
             await _context.Projects.Include(p => p.Client).FirstOrDefaultAsync(p => p.Id == id);
 
-        public async Task<PagedResult<Projects>> GetProjectsPagedAsync(int pageNumber, int pageSize, string? search, string? status, string?priority, string? sortBy, string? sortOrder)
+        public async Task<PagedResult<ProjectService>> GetProjectsPagedAsync(int pageNumber, int pageSize, string? search, string? status, string?priority, string? sortBy, string? sortOrder)
         {
             if (pageNumber < 1) pageNumber = 1;
             if (pageSize < 1) pageSize = 10;
@@ -36,7 +31,7 @@ namespace Services
             if(!string.IsNullOrWhiteSpace(search))
             {
                 query = query.Where(p =>
-                    p.ProjectTitle.ToLower().Contains(search) ||
+                    p.Title.ToLower().Contains(search) ||
                     p.Client.ClientName.ToLower().Contains(search) ||
                     p.Description.ToLower().Contains(search));
             }
@@ -53,8 +48,8 @@ namespace Services
 
             query = (sortBy?.ToLower(), sortOrder?.ToLower()) switch
             {
-                ("title", "asc") => query.OrderBy(p => p.ProjectTitle),
-                ("title", "desc") => query.OrderByDescending(p => p.ProjectTitle),
+                ("title", "asc") => query.OrderBy(p => p.Title),
+                ("title", "desc") => query.OrderByDescending(p => p.Title),
                 ("client", "asc") => query.OrderBy(p => p.Client.ClientName),
                 ("client", "desc") => query.OrderByDescending(p => p.Client.ClientName),
                 ("budget", "asc") => query.OrderBy(p => p.Budget),
@@ -71,7 +66,7 @@ namespace Services
                 .Take(pageSize)
                 .ToListAsync();
 
-            return new PagedResult<Projects>
+            return new PagedResult<ProjectService>
             {
                 Items = items,
                 PageNumber = pageNumber,
@@ -81,7 +76,7 @@ namespace Services
             };
         }
 
-        public async Task<Projects> CreateProjectAsync(Projects project)
+        public async Task<Project> CreateProjectAsync(Project project)
         {
             project.StartDate = DateTime.SpecifyKind(project.StartDate, DateTimeKind.Utc);
             project.DueDate = DateTime.SpecifyKind(project.DueDate, DateTimeKind.Utc);
@@ -93,12 +88,12 @@ namespace Services
             return project;
         }
 
-        public async Task<Projects?> UpdateProjectAsync(int id, Projects updatedProject)
+        public async Task<Project?> UpdateProjectAsync(int id, Project updatedProject)
         {
             var existing = await _context.Projects.Include(p => p.Client).FirstOrDefaultAsync(p => p.Id == id);
             if (existing == null) return null;
 
-            existing.ProjectTitle = updatedProject.ProjectTitle;
+            existing.Title = updatedProject.Title;
             existing.Description = updatedProject.Description;
             existing.Budget = updatedProject.Budget;
             existing.StartDate = updatedProject.StartDate;
@@ -116,39 +111,39 @@ namespace Services
             return existing;
         }
 
-        public async Task<Projects?> PatchProjectAsync(int id, Dictionary<string, object> updates)
-        {
-            var existing = await _context.Projects.Include(p => p.Client).FirstOrDefaultAsync(p => p.Id == id);
-            if (existing == null) return null;
+        //public async Task<Project?> PatchProjectAsync(int id, Dictionary<string, object> updates)
+        //{
+        //    var existing = await _context.Projects.Include(p => p.Client).FirstOrDefaultAsync(p => p.Id == id);
+        //    if (existing == null) return null;
 
-            foreach (var (key, value) in updates)
-            {
-                switch (key.ToLower())
-                {
-                    case "projecttitle": existing.ProjectTitle = value.ToString(); break;
-                    case "description": existing.Description = value.ToString(); break;
-                    case "budget": existing.Budget = Convert.ToDecimal(value); break;
-                    case "startdate": existing.StartDate = Convert.ToDateTime(value).ToUniversalTime(); break;
-                    case "duedate": existing.DueDate = Convert.ToDateTime(value).ToUniversalTime(); break;
-                    case "initialstatus": existing.InitialStatus = (InitialStatus)Convert.ToInt32(value); break;
-                    case "prioritylevel": existing.PriorityLevel = (PriorityLevel)Convert.ToInt32(value); break;
-                    case "progress": existing.Progress = Convert.ToInt32(value); break;
-                    case "client":
-                        if (value is Dictionary<string, object> clientData)
-                        {
-                            if (existing.Client == null) existing.Client = new Client();
-                            if (clientData.TryGetValue("clientName", out var clientName))
-                                existing.Client.ClientName = clientName.ToString();
-                        }
-                        break;
-                }
-            }
+        //    foreach (var (key, value) in updates)
+        //    {
+        //        switch (key.ToLower())
+        //        {
+        //            case "projecttitle": existing.Title = value.ToString(); break;
+        //            case "description": existing.Description = value.ToString(); break;
+        //            case "budget": existing.Budget = Convert.ToDecimal(value); break;
+        //            case "startdate": existing.StartDate = Convert.ToDateTime(value).ToUniversalTime(); break;
+        //            case "duedate": existing.DueDate = Convert.ToDateTime(value).ToUniversalTime(); break;
+        //            case "initialstatus": existing.InitialStatus = (InitialStatus)Convert.ToInt32(value); break;
+        //            case "prioritylevel": existing.PriorityLevel = (PriorityLevel)Convert.ToInt32(value); break;
+        //            case "progress": existing.Progress = Convert.ToInt32(value); break;
+        //            case "client":
+        //                if (value is Dictionary<string, object> clientData)
+        //                {
+        //                    if (existing.Client == null) existing.Client = new Client();
+        //                    if (clientData.TryGetValue("clientName", out var clientName))
+        //                        existing.Client.ClientName = clientName.ToString();
+        //                }
+        //                break;
+        //        }
+        //    }
 
-            existing.LastModified = DateTime.UtcNow;
+        //    existing.LastModified = DateTime.UtcNow;
 
-            await _context.SaveChangesAsync();
-            return existing;
-        }
+        //    await _context.SaveChangesAsync();
+        //    return existing;
+        //}
 
         public async Task<bool> DeleteProjectAsync(int id)
         {
@@ -160,15 +155,7 @@ namespace Services
             return true;
         }
 
-        public async Task<bool> DeleteClientAsync(int id)
-        {
-            var client = await _context.Clients.FindAsync(id);
-            if (client == null) return false;
-
-            _context.Clients.Remove(client);
-            await _context.SaveChangesAsync();
-            return true;
-        }
+        
 
     }
 }

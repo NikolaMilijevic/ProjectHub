@@ -35,7 +35,7 @@ const ProjectsContainer = () => {
   );
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
+  const itemsPerPage = 1;
   
  const { data, isLoading, error } = useProjectPaged({
     pageNumber: currentPage,

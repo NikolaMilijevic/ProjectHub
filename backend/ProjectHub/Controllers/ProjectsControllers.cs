@@ -1,12 +1,6 @@
-﻿using Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using Data.Entity;
-using Data.Enum;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Services;
-
-using System.Runtime.InteropServices;
-using System.Text.Json;
+using Services.Services.Project;
 
 namespace ProjectHub.Controllers
 {
@@ -29,7 +23,7 @@ namespace ProjectHub.Controllers
         public async Task<IActionResult> GetProject(int id)
         {
             var project = await _service.GetProjectByIdAsync(id);
-            return project == null ? NotFound() : Ok(project);
+            return project == null ? NotFound("Project was not found") : Ok(project);
         }
 
         [HttpGet("paged")]
@@ -48,7 +42,7 @@ namespace ProjectHub.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProject([FromBody] Projects project)
+        public async Task<IActionResult> CreateProject([FromBody] Project project)
         {
             if (project == null || project.Client == null)
                 return BadRequest(new { message = "Project and Client are required." });
@@ -58,26 +52,22 @@ namespace ProjectHub.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(int id, [FromBody] Projects updatedProject)
+        public async Task<IActionResult> UpdateProject(int id, [FromBody] Project updatedProject)
         {
             var project = await _service.UpdateProjectAsync(id, updatedProject);
             return project == null ? NotFound(new { message = "Project not found" }) : Ok(project);
         }
 
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> PatchProject(int id, [FromBody] Dictionary<string, object> updates)
-        {
-            var project = await _service.PatchProjectAsync(id, updates);
-            return project == null ? NotFound() : Ok(project);
-        }
+        //[HttpPatch("{id}")]
+        //public async Task<IActionResult> PatchProject(int id, [FromBody] Dictionary<string, object> updates)
+        //{
+        //    var project = await _service.PatchProjectAsync(id, updates);
+        //    return project == null ? NotFound() : Ok(project);
+        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id) =>
             await _service.DeleteProjectAsync(id) ? NoContent() : NotFound();
-
-        [HttpDelete("client/{id}")]
-        public async Task<IActionResult> DeleteClient(int id) =>
-            await _service.DeleteClientAsync(id) ? NoContent() : NotFound();
 
     }
 }

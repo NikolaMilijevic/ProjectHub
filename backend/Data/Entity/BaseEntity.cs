@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Data.Entity
 {
@@ -12,7 +8,8 @@ namespace Data.Entity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public T? Id { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateOnly CreatedAt { get; set; }
+        public DateOnly? LastModified { get; set; }
 
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Data.Dtos
+﻿namespace Models.Responses
 {
     public class PagedResult<T>
     {
